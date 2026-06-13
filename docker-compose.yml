@@ -1,0 +1,75 @@
+services:
+  postgres_app:
+    image: postgres:16-alpine
+    container_name: cirop_postgres_app
+    environment:
+      POSTGRES_DB: cirop_app
+      POSTGRES_USER: cirop_user
+      POSTGRES_PASSWORD: cirop_pass_2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_app_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cirop_user -d cirop_app"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  postgres_analytics:
+    image: postgres:16-alpine
+    container_name: cirop_postgres_analytics
+    environment:
+      POSTGRES_DB: cirop_analytics
+      POSTGRES_USER: cirop_user
+      POSTGRES_PASSWORD: cirop_pass_2024
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_analytics_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: cirop_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redpanda:
+    image: redpandadata/redpanda:latest
+    container_name: cirop_redpanda
+    command:
+      - redpanda start
+      - --smp 1
+      - --overprovisioned
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://redpanda:9092,external://localhost:19092
+    ports:
+      - "19092:19092"
+      - "9644:9644"
+
+  mlflow:
+    image: python:3.11-slim
+    container_name: cirop_mlflow
+    working_dir: /app
+    command: >
+      sh -c "pip install mlflow psycopg2-binary &&
+             mlflow server --host 0.0.0.0 --port 5000 
+             --backend-store-uri postgresql://cirop_user:cirop_pass_2024@postgres_app:5432/cirop_app 
+             --default-artifact-root /mlflow-artifacts"
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_artifacts:/mlflow-artifacts
+    depends_on:
+      postgres_app:
+        condition: service_healthy
+
+volumes:
+  postgres_app_data:
+  postgres_analytics_data:
+  mlflow_artifacts:
