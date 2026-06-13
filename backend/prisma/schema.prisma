@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  user_id       String           @id @default(uuid()) @db.Uuid
+  email         String           @unique
+  password_hash String
+  first_name    String           @db.VarChar(100)
+  last_name     String           @db.VarChar(100)
+  role          String           @db.VarChar(20)
+  is_active     Boolean          @default(true)
+  last_login_at DateTime?        @db.Timestamptz()
+  created_at    DateTime         @default(now()) @db.Timestamptz()
+  updated_at    DateTime         @updatedAt @db.Timestamptz()
+  refresh_tokens RefreshToken[]
+  scenario_presets ScenarioPreset[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  token_id    String    @id @default(uuid()) @db.Uuid
+  user_id     String    @db.Uuid
+  token_hash  String    @unique
+  expires_at  DateTime  @db.Timestamptz()
+  revoked     Boolean   @default(false)
+  created_at  DateTime  @default(now()) @db.Timestamptz()
+  user        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model ScenarioPreset {
+  preset_id   String    @id @default(uuid()) @db.Uuid
+  user_id     String    @db.Uuid
+  name        String    @db.VarChar(200)
+  config      Json
+  created_at  DateTime  @default(now()) @db.Timestamptz()
+  updated_at  DateTime  @updatedAt @db.Timestamptz()
+  user        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@map("scenario_presets")
+}
