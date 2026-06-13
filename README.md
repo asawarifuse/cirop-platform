@@ -14,3 +14,8 @@ Enterprise analytics platform combining customer segmentation, CLV prediction, c
 ## Quick Start
 ```bash
 docker-compose up -d
+
+---
+
+## License
+This project is not licensed for use, modification, or distribution. All rights reserved.
