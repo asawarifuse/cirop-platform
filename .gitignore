@@ -1,0 +1,15 @@
+node_modules/
+.env
+.env.local
+__pycache__/
+*.pyc
+.mypy_cache/
+venv/
+.venv/
+mlruns/
+*.pkl
+*.joblib
+dist/
+build/
+.DS_Store
+*.log
