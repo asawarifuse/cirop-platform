@@ -23,16 +23,27 @@ Enterprise analytics platform combining customer segmentation, CLV prediction, c
 ## 📁 Folder Structure
 cirop-platform/
 ├── frontend/ # React application
+
 ├── backend/ # Node.js + Express API
+
 │ ├── src/controllers/
+
 │ ├── src/middleware/
+
 │ └── src/routes/
+
 ├── ml-engine/ # Python ML pipeline
+
 │ └── src/
+
 ├── database/ # SQL schemas & seeds
+
 ├── powerbi/ # Power BI dashboards
+
 ├── docs/ # Documentation
+
 ├── docker-compose.yml
+
 └── README.md
 
 text
