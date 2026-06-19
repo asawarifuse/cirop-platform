@@ -166,6 +166,18 @@ text
 - Top customer (ID 372): Predicted CLV $2,081.73, 13.4 purchases, AOV $155.77
 - Predictions stored in database
 
+### Day 14 — Churn Prediction ✅
+- Fetched 500 customers with transaction history from PostgreSQL
+- Defined churn: no purchase in last 90 days
+- Target distribution: 139 churned (27.8%), 361 active (72.2%)
+- Feature engineering: 17 features (orders, revenue, AOV, channel dummies, segment dummies)
+- Trained 3 models: Logistic Regression, Random Forest, XGBoost
+- Best model: XGBoost (ROC-AUC: 1.000)
+- Risk categories: Low (<30%), Medium (30-50%), High (50-70%), Critical (>70%)
+- Risk distribution: 361 Low Risk, 139 Critical Risk
+- Top high-risk customers identified (all Lost Customers segment)
+- Model saved to models/churn_model.pkl
+
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
 
