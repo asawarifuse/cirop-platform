@@ -186,6 +186,16 @@ text
 - Best month: Dec 2025 ($46,126), Worst: Feb 2025 ($25,975)
 - Forecast saved to data/revenue_forecast.csv
 
+### Day 16 — Scenario Simulator ✅
+- Built 5 business scenarios using real customer data
+- Revenue impact analysis per scenario
+- $50 AOV increase = $148,300 (highest ROI)
+- 5% retention increase = $10,744
+- 10% churn reduction = $8,356
+- 20% marketing budget increase = $10,637
+- 20% At Risk → Loyal conversion = $1,905
+- Top recommendation: Focus on increasing Average Order Value
+
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
 
