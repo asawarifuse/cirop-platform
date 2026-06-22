@@ -199,7 +199,7 @@ text
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
 
-Status: In Progress (Day 13/75)
+Status: In Progress (Day 16/75)
 
 ## 📜 License
 This project is not licensed for use, modification, or distribution. All rights reserved.
