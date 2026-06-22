@@ -178,6 +178,14 @@ text
 - Top high-risk customers identified (all Lost Customers segment)
 - Model saved to models/churn_model.pkl
 
+### Day 15 — Revenue Forecasting with Prophet ✅
+- Fetched 611 days of revenue data (Jan 2023 - Dec 2024)
+- Total historical revenue: $298,446.10, avg daily: $488.46
+- Trained Prophet model with yearly + weekly seasonality
+- 12-month forecast: $436,073.85 (83.8% YoY growth)
+- Best month: Dec 2025 ($46,126), Worst: Feb 2025 ($25,975)
+- Forecast saved to data/revenue_forecast.csv
+
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
 
