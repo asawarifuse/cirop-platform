@@ -196,6 +196,16 @@ text
 - 20% At Risk → Loyal conversion = $1,905
 - Top recommendation: Focus on increasing Average Order Value
 
+### Day 17 — ML Predictions API (FastAPI) ✅
+- Built FastAPI server on port 8000 serving ML predictions
+- Endpoints: /health, /predictions/customer/{id}, /predictions/segments, /predictions/forecast, /predictions/churn, /scenarios
+- Customer predictions return: segment, CLV, churn probability, risk category
+- Segment summary returns all 6 segments with customer counts and avg revenue
+- Scenario simulator returns 5 business scenarios with revenue impact
+- Top recommendation: $50 AOV Increase ($148,300 impact)
+- Added Dockerfile and requirements.txt for containerization
+- API tested and all endpoints working
+
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
 
