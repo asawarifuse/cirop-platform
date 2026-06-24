@@ -68,8 +68,8 @@ services:
     depends_on:
       postgres_app:
         condition: service_healthy
-  # ML Prediction API
-    ml-api:
+
+  ml-api:
     build:
       context: ./ml-engine
       dockerfile: Dockerfile

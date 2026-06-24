@@ -8,12 +8,17 @@ from pydantic import BaseModel
 import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine, text
-import joblib
 import os
 
 app = FastAPI(title="CIROP ML Engine", version="1.0")
 
-DB_URL = "postgresql://cirop_user:cirop_pass_2024@localhost:5433/cirop_analytics"
+# Database connection - works both locally and in Docker
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_PORT = os.getenv('DB_PORT', '5433')
+DB_NAME = os.getenv('DB_NAME', 'cirop_analytics')
+DB_USER = os.getenv('DB_USER', 'cirop_user')
+DB_PASS = os.getenv('DB_PASS', 'cirop_pass_2024')
+DB_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 engine = create_engine(DB_URL)
 
 # Response models
@@ -23,17 +28,6 @@ class PredictionResponse(BaseModel):
     clv_12m: float
     churn_probability: float
     risk_category: str
-
-class SegmentSummary(BaseModel):
-    segment: str
-    customer_count: int
-    avg_revenue: float
-
-class ForecastResponse(BaseModel):
-    next_30_days: float
-    next_90_days: float
-    next_365_days: float
-    growth_pct: float
 
 
 @app.get("/")
@@ -46,7 +40,7 @@ def health():
     return {"status": "healthy"}
 
 
-@app.get("/predictions/customer/{customer_id}", response_model=PredictionResponse)
+@app.get("/predictions/customer/{customer_id}")
 def predict_customer(customer_id: int):
     """Get all predictions for a single customer"""
     query = f"""
@@ -70,7 +64,7 @@ def predict_customer(customer_id: int):
     row = df.iloc[0]
     days = row['days_since_purchase'] if pd.notna(row['days_since_purchase']) else 999
     
-    # Simple prediction logic
+    # Churn probability logic
     churn_prob = min(0.99, days / 365)
     
     if churn_prob > 0.7:
@@ -82,6 +76,7 @@ def predict_customer(customer_id: int):
     else:
         risk = "Low Risk"
     
+    # Simple CLV estimation
     clv = row['total_revenue'] * 1.2 if row['total_orders'] > 0 else 100
     
     return {
@@ -98,7 +93,7 @@ def get_segments():
     """Get segment summary"""
     query = """
         SELECT 
-            current_segment,
+            current_segment as segment,
             COUNT(*) as customer_count,
             ROUND(COALESCE(AVG(
                 (SELECT COALESCE(SUM(net_revenue), 0) 
