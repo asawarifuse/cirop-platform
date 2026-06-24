@@ -206,6 +206,13 @@ text
 - Added Dockerfile and requirements.txt for containerization
 - API tested and all endpoints working
 
+### Day 18 — Connect Backend to ML API ✅
+- Created mlApiService.js to call FastAPI endpoints from Node.js
+- Updated customer controller to fetch real predictions
+- Backend now returns live ML data: segment, CLV, churn probability, risk category
+- Tested: Customer 1 → Lost Customers, $620.83 CLV, 63% churn risk, High Risk
+- Fixed port conflicts between Docker ml-api container and local server
+
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
 
