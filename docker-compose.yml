@@ -68,6 +68,22 @@ services:
     depends_on:
       postgres_app:
         condition: service_healthy
+  # ML Prediction API
+    ml-api:
+    build:
+      context: ./ml-engine
+      dockerfile: Dockerfile
+    container_name: cirop_ml_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres_analytics
+    environment:
+      - DB_HOST=postgres_analytics
+      - DB_PORT=5432
+      - DB_NAME=cirop_analytics
+      - DB_USER=cirop_user
+      - DB_PASS=cirop_pass_2024
 
 volumes:
   postgres_app_data:
