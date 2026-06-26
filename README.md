@@ -220,6 +220,13 @@ text
 - Built starter UI with dark theme
 - Frontend running on port 3000
 
+### Day 20 — Login Page & Auth Store ✅
+- Created Redux Toolkit store with authSlice (login, logout, clearError)
+- Built Login page with dark theme UI, form validation, error handling
+- JWT token stored in localStorage, auto-redirect on login
+- Protected routing: /login → /dashboard (authenticated only)
+- Frontend connected to backend API on port 3001
+- Tested: admin@cirop.com → Dashboard with role display
 
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
