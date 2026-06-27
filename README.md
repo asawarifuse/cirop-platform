@@ -228,6 +228,14 @@ text
 - Frontend connected to backend API on port 3001
 - Tested: admin@cirop.com → Dashboard with role display
 
+## Day 21 — Dashboard Layout & KPI Cards ✅
+- Built Layout component with sidebar navigation (5 pages)
+- User info display with logout button
+- KPI Cards component: Revenue, Customers, Churn Rate, Avg CLV
+- Color-coded cards with trend indicators
+- Two chart placeholder sections for Revenue and Segments
+- Protected dashboard behind JWT authentication
+
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
 
