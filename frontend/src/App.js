@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Login from './pages/Login';
+import Layout from './components/Layout';
+import KPICards from './components/KPICards';
 
 function App() {
   const { token } = useSelector((state) => state.auth);
@@ -20,11 +22,29 @@ function Dashboard() {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
-      <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
-      <p className="text-gray-400 text-lg">Welcome, {user?.first_name}!</p>
-      <p className="text-green-400 mt-2">Role: {user?.role}</p>
-    </div>
+    <Layout>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+        <p className="text-gray-400 mt-1">Welcome back, {user?.first_name}</p>
+      </div>
+      
+      <KPICards />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+          <h2 className="text-lg font-semibold text-white mb-4">Revenue Overview</h2>
+          <div className="h-48 flex items-center justify-center text-gray-500">
+            Revenue chart loading...
+          </div>
+        </div>
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+          <h2 className="text-lg font-semibold text-white mb-4">Customer Segments</h2>
+          <div className="h-48 flex items-center justify-center text-gray-500">
+            Segments chart loading...
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 }
 
