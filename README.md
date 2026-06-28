@@ -228,13 +228,23 @@ text
 - Frontend connected to backend API on port 3001
 - Tested: admin@cirop.com → Dashboard with role display
 
-## Day 21 — Dashboard Layout & KPI Cards ✅
+### Day 21 — Dashboard Layout & KPI Cards ✅
 - Built Layout component with sidebar navigation (5 pages)
 - User info display with logout button
 - KPI Cards component: Revenue, Customers, Churn Rate, Avg CLV
 - Color-coded cards with trend indicators
 - Two chart placeholder sections for Revenue and Segments
 - Protected dashboard behind JWT authentication
+
+### Day 22 — Customer List Page ✅
+- Built Customers page with full table layout
+- Created API service layer with Axios interceptor for JWT
+- Segment filter buttons (All, Champions, Loyal, Potential Loyalists, At Risk, Lost)
+- Search input for customer lookup
+- Table columns: Name, Email, City, Country, Segment, Orders, Revenue
+- Color-coded segment badges
+- Pagination controls (Previous/Next)
+- Connected to backend via JWT-authenticated API calls
 
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
