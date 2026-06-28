@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import Login from './pages/Login';
 import Layout from './components/Layout';
 import KPICards from './components/KPICards';
+import Customers from './pages/Customers';
 
 function App() {
   const { token } = useSelector((state) => state.auth);
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/login" element={!token ? <Login /> : <Navigate to="/dashboard" />} />
         <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" />} />
+        <Route path="/customers" element={token ? <Customers /> : <Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
