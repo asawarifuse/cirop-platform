@@ -246,6 +246,16 @@ text
 - Pagination controls (Previous/Next)
 - Connected to backend via JWT-authenticated API calls
 
+### Day 23 — Analytics Page with Charts ✅
+- Built Analytics page with Recharts library
+- 4 KPI cards: Total Revenue, Avg Order Value, Total Orders, Products Sold
+- Monthly revenue bar chart from API data
+- Revenue by category pie chart with color coding
+- AOV by customer segment horizontal bar chart
+- Purchase frequency distribution chart
+- Top products table with revenue, units sold, ratings
+- All data fetched from backend order analytics API
+
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
 
