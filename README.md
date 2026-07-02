@@ -256,6 +256,14 @@ text
 - Top products table with revenue, units sold, ratings
 - All data fetched from backend order analytics API
 
+### Day 24 — Predictions Page with Real ML Data ✅
+- Fixed ML API CORS, port conflicts, and duplicate code bug
+- Segments endpoint returns real data from PostgreSQL (6 segments, 500 customers)
+- Churn risk distribution chart with live data
+- Revenue forecast cards: 30-day, 90-day, 365-day, YoY growth
+- Segment details table with customer counts and total revenue
+- Frontend connected to ML API on port 8000
+
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
 
