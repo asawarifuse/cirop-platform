@@ -26,4 +26,18 @@ export const orderAPI = {
   getAOV: () => api.get('/orders/analytics/aov'),
 };
 
+const ML_API_URL = 'http://localhost:8000';
+
+const mlApi = axios.create({
+  baseURL: ML_API_URL,
+});
+
+export const mlAPI = {
+  getCustomerPrediction: (id) => mlApi.get(`/predictions/customer/${id}`),
+  getSegments: () => mlApi.get('/predictions/segments'),
+  getForecast: () => mlApi.get('/predictions/forecast'),
+  getChurnSummary: () => mlApi.get('/predictions/churn'),
+  getScenarios: () => mlApi.get('/scenarios'),
+};
+
 export default api;

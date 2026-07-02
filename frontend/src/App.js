@@ -5,7 +5,7 @@ import Layout from './components/Layout';
 import KPICards from './components/KPICards';
 import Customers from './pages/Customers';
 import Analytics from './pages/Analytics';
-
+import Predictions from './pages/Predictions';
 function App() {
   const { token } = useSelector((state) => state.auth);
 
@@ -16,6 +16,7 @@ function App() {
         <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" />} />
         <Route path="/customers" element={token ? <Customers /> : <Navigate to="/login" />} />
         <Route path="/analytics" element={token ? <Analytics /> : <Navigate to="/login" />} />
+        <Route path="/predictions" element={token ? <Predictions /> : <Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
