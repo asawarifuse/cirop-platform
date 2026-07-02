@@ -264,6 +264,14 @@ text
 - Segment details table with customer counts and total revenue
 - Frontend connected to ML API on port 8000
 
+## Day 25 — Scenarios Page ✅
+- Built Scenario Simulator page with 5 business what-if cards
+- Top recommendation banner: $50 AOV Increase ($148,300 impact)
+- Scenario cards with icons, color coding, and revenue impact
+- Priority table sorted by impact: High/Medium/Low labels
+- Each scenario clickable for future drill-down
+- Connected to ML API /scenarios endpoint with fallback data
+
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
 
