@@ -264,13 +264,23 @@ text
 - Segment details table with customer counts and total revenue
 - Frontend connected to ML API on port 8000
 
-## Day 25 — Scenarios Page ✅
+### Day 25 — Scenarios Page ✅
 - Built Scenario Simulator page with 5 business what-if cards
 - Top recommendation banner: $50 AOV Increase ($148,300 impact)
 - Scenario cards with icons, color coding, and revenue impact
 - Priority table sorted by impact: High/Medium/Low labels
 - Each scenario clickable for future drill-down
 - Connected to ML API /scenarios endpoint with fallback data
+
+### Day 26  — Backend Real Data Integration ✅
+- Replaced all mock data in order analytics with real PostgreSQL queries
+- Created analyticsDb.js connection pool for cirop_analytics database
+- Revenue analytics: real total_revenue ($298,446), monthly trends, category breakdown
+- Product performance: top 5/bottom 2 products from real transaction data
+- Purchase frequency: calculated from actual customer order counts
+- AOV: overall average and by customer segment from real data
+- Frontend Analytics page now shows live charts: bar, pie, frequency distribution
+- KPI cards populated with real revenue and AOV numbers
 
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
