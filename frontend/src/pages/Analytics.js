@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import KPICards from '../components/KPICards';
 import { orderAPI } from '../services/api';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
 
@@ -25,10 +25,10 @@ function Analytics() {
         orderAPI.getFrequency(),
         orderAPI.getAOV(),
       ]);
-      setRevenue(revRes.data.data);
-      setProducts(prodRes.data.data);
-      setFrequency(freqRes.data.data);
-      setAOV(aovRes.data.data);
+      setRevenue(revRes.data.data || revRes.data);
+      setProducts(prodRes.data.data || prodRes.data);
+      setFrequency(freqRes.data.data || freqRes.data);
+      setAOV(aovRes.data.data || aovRes.data);
     } catch (error) {
       console.error('Failed to fetch analytics:', error);
     } finally {
@@ -44,9 +44,13 @@ function Analytics() {
     );
   }
 
+  const totalRevenue = revenue?.total_revenue || 0;
+  const overallAOV = aov?.overall_aov || 0;
+  const growthPct = revenue?.revenue_growth_pct || 0;
+
   const kpiData = [
-    { title: 'Total Revenue', value: `$${(revenue?.total_revenue / 1000).toFixed(0)}K`, change: `+${revenue?.revenue_growth_pct || 0}%`, color: 'green' },
-    { title: 'Avg Order Value', value: `$${aov?.overall_aov || 0}`, change: '+5.3%', color: 'blue' },
+    { title: 'Total Revenue', value: `$${(totalRevenue / 1000).toFixed(0)}K`, change: `+${growthPct}%`, color: 'green' },
+    { title: 'Avg Order Value', value: `$${Number(overallAOV).toFixed(2)}`, change: '+5.3%', color: 'blue' },
     { title: 'Total Orders', value: '2,966', change: '+8.1%', color: 'purple' },
     { title: 'Products Sold', value: '50', change: '+3.2%', color: 'green' },
   ];
@@ -155,9 +159,9 @@ function Analytics() {
                 <tr key={index} className="border-b border-gray-700/50">
                   <td className="p-3 text-gray-400">{index + 1}</td>
                   <td className="p-3 text-white">{product.product}</td>
-                  <td className="p-3 text-right text-green-400">${product.revenue?.toLocaleString()}</td>
+                  <td className="p-3 text-right text-green-400">${(product.revenue || 0).toLocaleString()}</td>
                   <td className="p-3 text-right text-gray-300">{product.units_sold}</td>
-                  <td className="p-3 text-right text-yellow-400">{'⭐'.repeat(Math.round(product.avg_rating))}</td>
+                  <td className="p-3 text-right text-yellow-400">{'⭐'.repeat(Math.round(product.avg_rating || 4))}</td>
                 </tr>
               ))}
             </tbody>
