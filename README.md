@@ -58,229 +58,31 @@ text
 ## 📅 Build Log
 
 ### Day 1 — Environment Setup ✅
-- Installed Docker Desktop with WSL 2 and Ubuntu
-- Verified Node.js v24.13.0, Python 3.14.2, Git 2.52.0
-- Docker Engine running successfully
-
 ### Day 2 — Project Foundation ✅
-- Created monorepo structure (frontend, backend, ml-engine, database, powerbi, docker, docs, .github/workflows)
-- Initialized Git, pushed to GitHub as public repo
-- Added .gitignore (node_modules, venv, .env, __pycache__, mlruns, *.pkl, dist, logs)
-- README with all rights reserved notice
-
 ### Day 3 — Docker Compose Setup ✅
-- Created docker-compose.yml with 5 services
-- PostgreSQL App (port 5432), PostgreSQL Analytics (port 5433)
-- Redis Cache (port 6379) with healthcheck
-- Redpanda Streaming (port 19092) — Kafka-compatible, single binary
-- MLflow Tracking Server (port 5000) with PostgreSQL backend
-- All 5 containers health-checked and running
-
 ### Day 4 — Database Schema Design ✅
-- App DB (cirop_app): users, refresh_tokens, scenario_presets tables with UUID primary keys
-- Analytics DB (cirop_analytics): Star schema — dim_customer, dim_product, dim_date, fact_transactions, fact_customer_snapshot
-- Generated column: net_revenue = (quantity × unit_price) − discount_amount
-- 14 indexes across all tables for query performance
-- Seeded dim_date with 2,557 rows covering 2020-01-01 to 2026-12-31
-- Schema applied to both databases via Docker exec
-
 ### Day 5 — Backend Initialization ✅
-- Node.js project initialized with Express on port 3001
-- Installed: express, cors, helmet, express-rate-limit, jsonwebtoken, bcryptjs, dotenv, winston
-- Prisma ORM v5 installed and connected to PostgreSQL
-- Defined models: User, RefreshToken, ScenarioPreset
-- Generated Prisma client, pushed schema to database
-- Health check endpoint: GET /api/health → { status, service, timestamp }
-- Dev script with nodemon for auto-restart on file changes
-
 ### Day 6 — Authentication System ✅
-- JWT access tokens with 15-minute expiry
-- Refresh token rotation stored hashed in database (7-day expiry)
-- Bcrypt password hashing with 12 salt rounds
-- Role-based access control: Admin, Analyst, Executive
-- Rate limiting on login: 10 attempts per 15 minutes per IP
-- Auth middleware: authenticate() for JWT verification, authorize() for role check
-- 4 endpoints: POST /api/v1/auth/register, login, refresh, logout
-- Refresh tokens revoked on logout and on rotation
-- Tested successfully with admin@cirop.com / Admin@123
-
 ### Day 7 — Customer Management API ✅
-- GET /api/v1/customers — list with pagination (page, limit), segment filter, text search
-- GET /api/v1/customers/:id — detailed profile with scorecard, ML predictions, recent orders
-- Scorecard: total_orders, total_revenue, avg_order_value, purchase_frequency, days_since_last_purchase, lifetime_days
-- Predictions: clv_12_months, churn_probability, predicted_next_purchase_days
-- Both endpoints protected by JWT authentication middleware
-- LinkedIn post published — Week 1 build story
-
 ### Day 8 — Order Analytics API ✅
-- GET /orders/analytics/revenue — total_revenue, revenue_growth_pct, monthly trend, category breakdown
-- GET /orders/analytics/products — top 5 products (revenue, units, rating), bottom 2 products
-- GET /orders/analytics/frequency — avg_purchase_interval, frequency distribution (Weekly to Yearly), AOV trend
-- GET /orders/analytics/aov — overall AOV, by segment (5 segments), by channel (5 channels)
-- All endpoints JWT protected, structured mock data returned
-
 ### Day 9 — ML Engine & RFM Analysis ✅
-- Created Python virtual environment in ml-engine/
-- Installed: pandas, numpy, scikit-learn, matplotlib, seaborn, jupyter
-- Built RFM segmentation module: calculate_rfm(), segment_customers(), generate_segment_summary()
-- 5-tier quintile scoring (R, F, M scores 1-5 each), combined RFM score range 3-15
-- 6 segments: Champions, Loyal Customers, Potential Loyalists, At Risk, Lost Customers, Needs Attention
-- Segment summary with customer count, avg recency/frequency/monetary, revenue share
-- Tested on 1,000 synthetic customers with 5,000 transactions
-
 ### Day 10 — K-Means Clustering & DB Connection ✅
-- Feature preparation: log transform + StandardScaler for recency, frequency, monetary
-- find_optimal_clusters(): Elbow method + Silhouette score for k=2 to 10
-- perform_clustering(): K-Means with n_init=10, random_state=42
-- label_clusters(): automatic segment naming based on cluster recency/frequency ranks
-- PostgreSQL connection via SQLAlchemy + psycopg2-binary
-- Read functions: fetch_customers(), fetch_transactions(), fetch_customer_snapshots()
-- Write functions: write_segments(), write_predictions() with parameterized queries
-- Virtual environment rebuilt from scratch due to corrupted packages
-
 ### Day 11 — Seed Realistic Sample Data ✅
-- 500 customers: UUID business keys, 20 real first names, 20 real last names, 8 cities, 7 countries (USA/UK/Canada/Australia), 5 acquisition channels (Organic 35%, Paid Search 25%, Referral 20%, Direct 15%, Partner 5%)
-- 50 products: 20 named (Wireless Headphones, Running Shoes, Coffee Maker, etc.) + 30 auto-generated, 4 categories (Electronics, Sports, Home, Books), unit_price and unit_cost for gross profit
-- 5,000 transactions: UUID business keys, weighted quantities (50% qty=1), realistic dates within customer signup range, 5 statuses (Completed 75%, Returned 10%, Cancelled 5%), 4 payment methods
-- Total revenue: $501,972.85 across 2,966 completed orders
-- Data verified via PostgreSQL queries
-
 ### Day 12 — Customer Segmentation on Real Data ✅
-- Fetched 2,938 completed order records from fact_transactions
-- Calculated RFM scores for 498 customers (2 had zero completed orders)
-- Applied rule-based segmentation logic
-- Champions: 93 customers (18.7%) → $77,931.93 revenue (26.1%), avg recency 11.4 days
-- Loyal Customers: 80 customers (16.1%) → $42,174.20 revenue (14.1%), avg recency 12.6 days
-- Potential Loyalists: 63 customers (12.7%) → $46,346.68 revenue (15.5%)
-- At Risk: 63 customers (12.7%) → $23,208.74 revenue (7.8%)
-- Lost Customers: 199 customers (40.0%) → $108,784.55 revenue (36.5%), avg recency 137.9 days
-- Segments written to dim_customer.current_segment column
-
 ### Day 13 — CLV Prediction with BG/NBD & Gamma-Gamma ✅
-- Fetched 2,966 completed transactions from 498 customers
-- Trained Beta-Geometric/NBD model for purchase frequency prediction
-- Trained Gamma-Gamma model for monetary value prediction
-- 12-month CLV: Average $589.81, Median $540.48, Maximum $2,081.73
-- Total predicted 12-month revenue: $287,825.88
-- CLV distribution: Very Low 0.8%, Low 43.0%, Medium 45.0%, High 9.2%
-- Top customer (ID 372): Predicted CLV $2,081.73, 13.4 purchases, AOV $155.77
-- Predictions stored in database
-
 ### Day 14 — Churn Prediction ✅
-- Fetched 500 customers with transaction history from PostgreSQL
-- Defined churn: no purchase in last 90 days
-- Target distribution: 139 churned (27.8%), 361 active (72.2%)
-- Feature engineering: 17 features (orders, revenue, AOV, channel dummies, segment dummies)
-- Trained 3 models: Logistic Regression, Random Forest, XGBoost
-- Best model: XGBoost (ROC-AUC: 1.000)
-- Risk categories: Low (<30%), Medium (30-50%), High (50-70%), Critical (>70%)
-- Risk distribution: 361 Low Risk, 139 Critical Risk
-- Top high-risk customers identified (all Lost Customers segment)
-- Model saved to models/churn_model.pkl
-
 ### Day 15 — Revenue Forecasting with Prophet ✅
-- Fetched 611 days of revenue data (Jan 2023 - Dec 2024)
-- Total historical revenue: $298,446.10, avg daily: $488.46
-- Trained Prophet model with yearly + weekly seasonality
-- 12-month forecast: $436,073.85 (83.8% YoY growth)
-- Best month: Dec 2025 ($46,126), Worst: Feb 2025 ($25,975)
-- Forecast saved to data/revenue_forecast.csv
-
 ### Day 16 — Scenario Simulator ✅
-- Built 5 business scenarios using real customer data
-- Revenue impact analysis per scenario
-- $50 AOV increase = $148,300 (highest ROI)
-- 5% retention increase = $10,744
-- 10% churn reduction = $8,356
-- 20% marketing budget increase = $10,637
-- 20% At Risk → Loyal conversion = $1,905
-- Top recommendation: Focus on increasing Average Order Value
-
 ### Day 17 — ML Predictions API (FastAPI) ✅
-- Built FastAPI server on port 8000 serving ML predictions
-- Endpoints: /health, /predictions/customer/{id}, /predictions/segments, /predictions/forecast, /predictions/churn, /scenarios
-- Customer predictions return: segment, CLV, churn probability, risk category
-- Segment summary returns all 6 segments with customer counts and avg revenue
-- Scenario simulator returns 5 business scenarios with revenue impact
-- Top recommendation: $50 AOV Increase ($148,300 impact)
-- Added Dockerfile and requirements.txt for containerization
-- API tested and all endpoints working
-
 ### Day 18 — Connect Backend to ML API ✅
-- Created mlApiService.js to call FastAPI endpoints from Node.js
-- Updated customer controller to fetch real predictions
-- Backend now returns live ML data: segment, CLV, churn probability, risk category
-- Tested: Customer 1 → Lost Customers, $620.83 CLV, 63% churn risk, High Risk
-- Fixed port conflicts between Docker ml-api container and local server
-
 ### Day 19 — React Frontend Setup ✅
-- Created React app with Create React App
-- Installed: Redux Toolkit, React Router, Axios, Recharts, Tailwind CSS
-- Configured Tailwind CSS with PostCSS
-- Built starter UI with dark theme
-- Frontend running on port 3000
-
 ### Day 20 — Login Page & Auth Store ✅
-- Created Redux Toolkit store with authSlice (login, logout, clearError)
-- Built Login page with dark theme UI, form validation, error handling
-- JWT token stored in localStorage, auto-redirect on login
-- Protected routing: /login → /dashboard (authenticated only)
-- Frontend connected to backend API on port 3001
-- Tested: admin@cirop.com → Dashboard with role display
-
 ### Day 21 — Dashboard Layout & KPI Cards ✅
-- Built Layout component with sidebar navigation (5 pages)
-- User info display with logout button
-- KPI Cards component: Revenue, Customers, Churn Rate, Avg CLV
-- Color-coded cards with trend indicators
-- Two chart placeholder sections for Revenue and Segments
-- Protected dashboard behind JWT authentication
-
 ### Day 22 — Customer List Page ✅
-- Built Customers page with full table layout
-- Created API service layer with Axios interceptor for JWT
-- Segment filter buttons (All, Champions, Loyal, Potential Loyalists, At Risk, Lost)
-- Search input for customer lookup
-- Table columns: Name, Email, City, Country, Segment, Orders, Revenue
-- Color-coded segment badges
-- Pagination controls (Previous/Next)
-- Connected to backend via JWT-authenticated API calls
-
 ### Day 23 — Analytics Page with Charts ✅
-- Built Analytics page with Recharts library
-- 4 KPI cards: Total Revenue, Avg Order Value, Total Orders, Products Sold
-- Monthly revenue bar chart from API data
-- Revenue by category pie chart with color coding
-- AOV by customer segment horizontal bar chart
-- Purchase frequency distribution chart
-- Top products table with revenue, units sold, ratings
-- All data fetched from backend order analytics API
-
 ### Day 24 — Predictions Page with Real ML Data ✅
-- Fixed ML API CORS, port conflicts, and duplicate code bug
-- Segments endpoint returns real data from PostgreSQL (6 segments, 500 customers)
-- Churn risk distribution chart with live data
-- Revenue forecast cards: 30-day, 90-day, 365-day, YoY growth
-- Segment details table with customer counts and total revenue
-- Frontend connected to ML API on port 8000
-
 ### Day 25 — Scenarios Page ✅
-- Built Scenario Simulator page with 5 business what-if cards
-- Top recommendation banner: $50 AOV Increase ($148,300 impact)
-- Scenario cards with icons, color coding, and revenue impact
-- Priority table sorted by impact: High/Medium/Low labels
-- Each scenario clickable for future drill-down
-- Connected to ML API /scenarios endpoint with fallback data
-
 ### Day 26  — Backend Real Data Integration ✅
-- Replaced all mock data in order analytics with real PostgreSQL queries
-- Created analyticsDb.js connection pool for cirop_analytics database
-- Revenue analytics: real total_revenue ($298,446), monthly trends, category breakdown
-- Product performance: top 5/bottom 2 products from real transaction data
-- Purchase frequency: calculated from actual customer order counts
-- AOV: overall average and by customer segment from real data
-- Frontend Analytics page now shows live charts: bar, pie, frequency distribution
-- KPI cards populated with real revenue and AOV numbers
 
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
