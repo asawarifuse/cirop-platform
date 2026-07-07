@@ -83,6 +83,8 @@ text
 ### Day 24 — Predictions Page with Real ML Data ✅
 ### Day 25 — Scenarios Page ✅
 ### Day 26  — Backend Real Data Integration ✅
+### Day 27 (July 6) — Customer Page Real Data ✅
+### Day 28 (July 7) — Dashboard Real Data ✅
 
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
