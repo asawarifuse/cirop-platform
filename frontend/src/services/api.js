@@ -26,7 +26,7 @@ export const orderAPI = {
   getAOV: () => api.get('/orders/analytics/aov'),
 };
 
-const ML_API_URL = 'http://localhost:8000';
+const ML_API_URL = 'https://cirop-backend.onrender.com';
 
 const mlApi = axios.create({
   baseURL: ML_API_URL,
