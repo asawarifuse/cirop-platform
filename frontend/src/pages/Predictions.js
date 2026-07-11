@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { mlAPI } from '../services/api';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-
-const COLORS = ['#EF4444', '#F59E0B', '#3B82F6', '#10B981'];
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 function Predictions() {
   const [segments, setSegments] = useState([]);
@@ -23,8 +21,8 @@ function Predictions() {
         mlAPI.getChurnSummary(),
       ]);
       setSegments(segRes.data || segRes);
-setForecast(foreRes.data || foreRes);
-setChurnData(churnRes.data || churnRes);
+      setForecast(foreRes.data || foreRes);
+      setChurnData(churnRes.data || churnRes);
     } catch (error) {
       console.error('Failed to fetch predictions:', error);
     } finally {
@@ -72,24 +70,15 @@ setChurnData(churnRes.data || churnRes);
         <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
           <h2 className="text-lg font-semibold text-white mb-4">Customer Segments</h2>
           <ResponsiveContainer width="100%" height={280}>
-            <PieChart>
-              <Pie
-                data={segments}
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                dataKey="customer_count"
-                nameKey="segment"
-                label={({ segment, customer_count }) => `${segment}: ${customer_count}`}
-              >
-                {segments.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
+            <BarChart data={segments} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis type="number" stroke="#9CA3AF" fontSize={12} />
+              <YAxis dataKey="segment" type="category" stroke="#9CA3AF" fontSize={12} width={120} />
               <Tooltip
                 contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151', borderRadius: '8px' }}
               />
-            </PieChart>
+              <Bar dataKey="customer_count" fill="#3B82F6" radius={[0, 4, 4, 0]} name="Customers" />
+            </BarChart>
           </ResponsiveContainer>
         </div>
 
