@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3001/api/v1/auth';
+const API_URL = 'https://cirop-backend.onrender.com/api/v1/auth';
 
 export const loginUser = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
   try {
