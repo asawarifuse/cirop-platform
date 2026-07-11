@@ -12,10 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(helmet());
-app.use(cors({
-  origin: ['http://localhost:3000', 'https://your-app.vercel.app'],
-  credentials: true,
-}));
+app.use(cors());
 app.use(express.json());
 
 // Routes
