@@ -22,9 +22,9 @@ function Predictions() {
         mlAPI.getForecast(),
         mlAPI.getChurnSummary(),
       ]);
-      setSegments(segRes.data);
-      setForecast(foreRes.data);
-      setChurnData(churnRes.data);
+      setSegments(segRes.data || segRes);
+setForecast(foreRes.data || foreRes);
+setChurnData(churnRes.data || churnRes);
     } catch (error) {
       console.error('Failed to fetch predictions:', error);
     } finally {
