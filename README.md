@@ -86,6 +86,13 @@ text
 ### Day 27 — Customer Page Real Data 
 ### Day 28 — Dashboard Real Data 
 ### Day 29 — Polish & All Pages Verified
+### Day 30 — Mid-Point Review
+### Day 31 — Power BI Exploration
+### Day 32 — Deployment Prep
+### Day 33 — Neon PostgreSQL Setup
+### Day 34 — Backend Deployed (Render)
+### Day 35 — Frontend Deployed (Vercel)
+### Day 36 — Cloud Database Seeded
 
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
