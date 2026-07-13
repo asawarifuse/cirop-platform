@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
+const http = require('http');
+const { Server } = require('socket.io');
 const authRoutes = require('./routes/authRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const orderRoutes = require('./routes/orderRoutes');
@@ -10,10 +12,18 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: '*' } });
 
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+
+// Attach io to requests
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 // Routes
 app.use('/api/v1/auth', authRoutes);
@@ -82,6 +92,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'cirop-backend', timestamp: new Date().toISOString() });
 });
 
-app.listen(PORT, () => {
+const { startConsumer } = require('./streaming/kafkaConsumer');
+
+server.listen(PORT, () => {
   console.log(`CIROP Backend running on port ${PORT}`);
+  startConsumer(io).catch(console.error);
 });

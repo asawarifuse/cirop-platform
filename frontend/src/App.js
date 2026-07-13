@@ -1,3 +1,4 @@
+import { io } from 'socket.io-client';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
@@ -31,12 +32,21 @@ function App() {
 function Dashboard() {
   const { user } = useSelector((state) => state.auth);
   const [stats, setStats] = useState(null);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     axios.get('http://localhost:3001/api/v1/dashboard/summary', {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => setStats(res.data.data)).catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    const socket = io('http://localhost:3001');
+    socket.on('customer_event', (event) => {
+      setEvents(prev => [event, ...prev].slice(0, 10));
+    });
+    return () => socket.disconnect();
   }, []);
 
   const kpiData = stats ? [
@@ -61,8 +71,17 @@ function Dashboard() {
           <p className="text-gray-400">Monthly revenue data available in Analytics →</p>
         </div>
         <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-          <h2 className="text-lg font-semibold text-white mb-4">Customer Segments</h2>
-          <p className="text-gray-400">Segment breakdown available in Predictions →</p>
+          <h2 className="text-lg font-semibold text-white mb-4">Live Customer Events</h2>
+          <div className="space-y-2 max-h-48 overflow-y-auto">
+            {events.length === 0 && <p className="text-gray-500">Waiting for events...</p>}
+            {events.map((event, i) => (
+              <div key={i} className="flex items-center justify-between bg-gray-750 rounded p-2 text-sm">
+                <span className="text-gray-300">{event.event_type}</span>
+                <span className="text-gray-500">Customer #{event.customer_id}</span>
+                <span className="text-green-400">${event.amount}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </Layout>
