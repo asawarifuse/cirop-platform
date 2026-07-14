@@ -93,6 +93,9 @@ text
 ### Day 34 — Backend Deployed (Render)
 ### Day 35 — Frontend Deployed (Vercel)
 ### Day 36 — Cloud Database Seeded
+### Day 37 — Redpanda Real-Time Streaming
+### Day 38 — Prefect ML Pipeline Orchestration
+### Day 39 — Testing Suite (Jest + Supertest)
 
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
