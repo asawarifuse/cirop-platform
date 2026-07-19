@@ -1,0 +1,60 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-backend:
+    name: Test Backend
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: cirop_app
+          POSTGRES_USER: cirop_user
+          POSTGRES_PASSWORD: cirop_pass_2024
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: backend
+        run: npm install
+
+      - name: Run Prisma Generate
+        working-directory: backend
+        run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://cirop_user:cirop_pass_2024@localhost:5432/cirop_app
+
+      - name: Push Database Schema
+        working-directory: backend
+        run: npx prisma db push
+        env:
+          DATABASE_URL: postgresql://cirop_user:cirop_pass_2024@localhost:5432/cirop_app
+
+      - name: Run tests
+        working-directory: backend
+        run: npm test
+        env:
+          DATABASE_URL: postgresql://cirop_user:cirop_pass_2024@localhost:5432/cirop_app
+          JWT_SECRET: test-secret-key
+          JWT_REFRESH_SECRET: test-refresh-key
