@@ -1,0 +1,4 @@
+feature,reference_mean,current_mean,change_pct,p_value,drift_detected
+total_orders,6.03,5.79,-3.9,0.8474,False
+total_revenue,606.14,583.02,-3.8,0.6126,False
+days_since_purchase,65.85,70.0,6.3,0.9927,False
