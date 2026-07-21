@@ -96,6 +96,7 @@ text
 ### Day 37 — Redpanda Real-Time Streaming
 ### Day 38 — Prefect ML Pipeline Orchestration
 ### Day 39 — Testing Suite (Jest + Supertest)
+### DAY 40 — CI/CD Pipeline with GitHub Actions
 
 ## 👤 Author
 Built solo over 75 days by @asawarifuse
