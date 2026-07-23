@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/authSlice';
 import { useNavigate, NavLink } from 'react-router-dom';
@@ -6,6 +7,7 @@ function Layout({ children }) {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -22,8 +24,16 @@ function Layout({ children }) {
 
   return (
     <div className="flex h-screen bg-gray-900">
+      {/* Mobile hamburger */}
+      <button
+        className="lg:hidden fixed top-4 left-4 z-50 bg-gray-800 p-2 rounded text-white"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        {sidebarOpen ? '✕' : '☰'}
+      </button>
+
       {/* Sidebar */}
-      <div className="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
+      <div className={`w-64 bg-gray-800 border-r border-gray-700 flex flex-col fixed lg:relative h-full z-40 transition-transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         <div className="p-4 border-b border-gray-700">
           <h1 className="text-xl font-bold text-white">CIROP</h1>
           <p className="text-xs text-gray-500">Intelligence Platform</p>
@@ -34,6 +44,7 @@ function Layout({ children }) {
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-lg mb-1 transition ${
                   isActive
@@ -54,19 +65,14 @@ function Layout({ children }) {
               <p className="text-white text-sm font-medium">{user?.first_name} {user?.last_name}</p>
               <p className="text-gray-500 text-xs capitalize">{user?.role}</p>
             </div>
-            <button
-              onClick={handleLogout}
-              className="text-gray-400 hover:text-red-400 text-sm"
-            >
-              Logout
-            </button>
+            <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 text-sm">Logout</button>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-6">
+      <div className="flex-1 overflow-auto pt-14 lg:pt-0">
+        <div className="p-4 md:p-6">
           {children}
         </div>
       </div>
