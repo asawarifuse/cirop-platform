@@ -1,3 +1,4 @@
+import { CSVLink } from 'react-csv';
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { customerAPI } from '../services/api';
@@ -37,6 +38,16 @@ function Customers() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-white">Customers</h1>
         <p className="text-gray-400 mt-1">Manage and analyze your customer base</p>
+      </div>
+
+      <div className="flex gap-3 mb-4">
+        <CSVLink
+          data={customers}
+          filename="cirop-customers.csv"
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm transition no-underline inline-block"
+        >
+          📥 Export CSV
+        </CSVLink>
       </div>
 
       {/* Filters */}
