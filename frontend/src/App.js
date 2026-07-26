@@ -42,12 +42,22 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    const socket = io('http://localhost:3001');
-    socket.on('customer_event', (event) => {
-      setEvents(prev => [event, ...prev].slice(0, 10));
-    });
-    return () => socket.disconnect();
-  }, []);
+  const socket = io('http://localhost:3001');
+  
+  socket.on('customer_events', (event) => {
+    setEvents(prev => [{ type: 'event', ...event }, ...prev].slice(0, 10));
+  });
+  
+  socket.on('orders', (order) => {
+    setEvents(prev => [{ type: 'order', ...order }, ...prev].slice(0, 10));
+  });
+  
+  socket.on('alerts', (alert) => {
+    setEvents(prev => [{ type: 'alert', ...alert }, ...prev].slice(0, 10));
+  });
+  
+  return () => socket.disconnect();
+}, []);
 
   const kpiData = stats ? [
     { title: 'Total Revenue', value: `$${((stats.total_revenue || 0) / 1000).toFixed(0)}K`, change: '+12.5%', color: 'green' },
