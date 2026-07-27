@@ -1,15 +1,16 @@
-import { io } from 'socket.io-client';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
+import { io } from 'socket.io-client';
 import Login from './pages/Login';
 import Layout from './components/Layout';
 import KPICards from './components/KPICards';
-import Customers from './pages/Customers';
-import Analytics from './pages/Analytics';
-import Predictions from './pages/Predictions';
-import Scenarios from './pages/Scenarios';
+
+const Customers = lazy(() => import('./pages/Customers'));
+const Analytics = lazy(() => import('./pages/Analytics'));
+const Predictions = lazy(() => import('./pages/Predictions'));
+const Scenarios = lazy(() => import('./pages/Scenarios'));
 
 function App() {
   const { token } = useSelector((state) => state.auth);
@@ -17,14 +18,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={!token ? <Login /> : <Navigate to="/dashboard" />} />
-        <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/customers" element={token ? <Customers /> : <Navigate to="/login" />} />
-        <Route path="/analytics" element={token ? <Analytics /> : <Navigate to="/login" />} />
-        <Route path="/predictions" element={token ? <Predictions /> : <Navigate to="/login" />} />
-        <Route path="/scenarios" element={token ? <Scenarios /> : <Navigate to="/login" />} />
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
+  <Route path="/login" element={!token ? <Login /> : <Navigate to="/dashboard" />} />
+  <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" />} />
+  <Route path="/customers" element={token ? <Suspense fallback={<div className="text-white p-8">Loading...</div>}><Customers /></Suspense> : <Navigate to="/login" />} />
+  <Route path="/analytics" element={token ? <Suspense fallback={<div className="text-white p-8">Loading...</div>}><Analytics /></Suspense> : <Navigate to="/login" />} />
+  <Route path="/predictions" element={token ? <Suspense fallback={<div className="text-white p-8">Loading...</div>}><Predictions /></Suspense> : <Navigate to="/login" />} />
+  <Route path="/scenarios" element={token ? <Suspense fallback={<div className="text-white p-8">Loading...</div>}><Scenarios /></Suspense> : <Navigate to="/login" />} />
+  <Route path="*" element={<Navigate to="/login" />} />
+</Routes>
     </Router>
   );
 }

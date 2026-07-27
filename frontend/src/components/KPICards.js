@@ -1,3 +1,4 @@
+import React from 'react';
 function KPICards({ data }) {
   const defaultCards = [
     { title: 'Total Revenue', value: '$501,972', change: '+12.5%', color: 'green' },
@@ -40,4 +41,4 @@ function KPICards({ data }) {
   );
 }
 
-export default KPICards;
+export default React.memo(KPICards);
