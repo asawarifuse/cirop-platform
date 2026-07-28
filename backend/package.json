@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "dev": "nodemon src/index.js",
-  "start": "node src/index.js",
-  "build": "npx prisma generate",
-  "test": "jest --forceExit --detectOpenHandles"
-},
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "build": "npx prisma generate",
+    "test": "jest --forceExit --detectOpenHandles"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -20,8 +20,10 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^8.5.2",
     "helmet": "^8.2.0",
+    "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.3",
     "kafkajs": "^2.2.4",
     "pg": "^8.22.0",

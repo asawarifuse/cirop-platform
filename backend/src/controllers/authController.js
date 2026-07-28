@@ -30,6 +30,13 @@ const generateRefreshToken = async (user) => {
 const register = async (req, res) => {
   try {
     const { email, password, first_name, last_name, role } = req.body;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!emailRegex.test(email)) {
+  return res.status(400).json({ message: 'Invalid email format' });
+}
+if (password.length < 6) {
+  return res.status(400).json({ message: 'Password must be at least 6 characters' });
+}
 
     if (!email || !password || !first_name || !last_name || !role) {
       return res.status(400).json({ message: 'All fields are required' });

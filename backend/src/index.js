@@ -4,6 +4,9 @@ const helmet = require('helmet');
 const dotenv = require('dotenv');
 const http = require('http');
 const { Server } = require('socket.io');
+const mongoSanitize = require('express-mongo-sanitize');
+const hpp = require('hpp');
+const rateLimit = require('express-rate-limit');
 const authRoutes = require('./routes/authRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const orderRoutes = require('./routes/orderRoutes');
@@ -15,22 +18,22 @@ const PORT = process.env.PORT || 3001;
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
+app.use(mongoSanitize());
+app.use(hpp());
+app.use('/api/', rateLimit({ windowMs: 15 * 60 * 1000, max: 200, message: { message: 'Too many requests' } }));
 
-// Attach io to requests
 app.use((req, res, next) => {
   req.io = io;
   next();
 });
 
-// Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/customers', customerRoutes);
 app.use('/api/v1/orders', orderRoutes);
 
-// Dashboard summary
 app.get('/api/v1/dashboard/summary', async (req, res) => {
   try {
     const pool = require('./config/analyticsDb');
@@ -47,7 +50,6 @@ app.get('/api/v1/dashboard/summary', async (req, res) => {
   }
 });
 
-// ML Predictions endpoints
 app.get('/predictions/segments', async (req, res) => {
   try {
     const pool = require('./config/analyticsDb');
@@ -74,6 +76,7 @@ app.get('/predictions/churn', async (req, res) => {
   ]);
 });
 
+
 app.get('/scenarios', async (req, res) => {
   res.json({
     scenarios: [
@@ -87,7 +90,6 @@ app.get('/scenarios', async (req, res) => {
   });
 });
 
-// Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'cirop-backend', timestamp: new Date().toISOString() });
 });
